@@ -1,0 +1,781 @@
+NODE JS:
+UPPERCASE:
+import { upperCase} from "upper-case";
+
+console.log(upperCase("sireesha")); 
+
+MAXITERATIONS:
+
+var count=0,maxIterations=10;
+const intervalId = setInterval(() => {
+    console.log('Welcome to Node.js');
+    if(++count >= maxIterations) {
+        clearInterval(intervalId);
+        console.log(`Message display stopped after ${maxIterations} iterations.`);
+    }
+}, 1000);
+
+MATHFUNCTIONS:
+
+export function add(a,b){
+    return a+b;
+}
+export function sub(a,b){
+    return a-b;
+}
+export function mul(a,b){
+    return a*b;
+}
+export function div(a,b){
+    return a/b;
+}
+
+
+import { createInterface } from 'readline';
+import {add,sub,mul,div} from './mathFuntions.js';
+const rl=createInterface({
+    input:process.stdin,
+    output:process.stdout
+});
+rl.question('Enter the value of a:',(inputA)=>{
+    rl.question('Enter the value of b:',(inputB)=>{
+        const a=parseFloat(inputA);
+        const b=parseFloat(inputB);
+        console.log("Addition:"+add(a,b));
+        console.log("Subtraction:"+sub(a,b));
+        console.log("Multiplication:"+mul(a,b));
+        console.log("Division:"+div(a,b));
+        rl.close();
+    });
+});
+
+DAYS:
+
+function days(){
+    const current=new Date();
+    const currentYear=current.getFullYear();
+    const nextyear=new Date(currentYear+1,0,1);
+    const time=nextyear.getTime()-current.getTime();
+    const days=Math.ceil(time/(1000*60*60*24));
+    return days;
+}
+console.log(days());
+
+CHAT APP
+
+const express= require('express');
+const http=require('http');
+const socketIo=require('socket.io');
+const app=express();
+const server=http.createServer(app);
+const io=socketIo(server);
+app.use(express.static(__dirname+'/public'));
+io.on('connection',socket=>{
+    console.log('A user connected');
+    socket.on('disconnect',()=>{
+        console.log('A user disconnected');
+    });
+    socket.on('chat message',msg=>{
+        console.log('message:'+msg);
+        io.emit('chat message',msg);
+    });
+});
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+});
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input id="input" autocomplete="off">
+        <button>Send</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+    <script>
+        const socket=io();
+        const form=document.getElementById('form');
+        const input=document.getElementById('input');
+        form.addEventListener('submit',event=>{
+            event.preventDefault();
+            if(input.value){
+                socket.emit('chat message',input.value);
+                input.value='';
+            }
+        });
+        socket.on('chat message',msg=>{
+            const item=document.createElement('li');
+            item.textContent=msg;
+            document.getElementById('messages').appendChild(item);
+        });
+    </script>
+</body>
+</html>
+
+ANGULAR JS:
+
+<!DOCTYPE html>
+<html lang="en" ng-app="fullNameApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Full Name App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="FullNameController">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" ng-model="firstName" placeholder="Enter your first name">
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" ng-model="lastName" placeholder="Enter your last name">
+
+    <p>Your full name is: {{ getFullName() }}</p>
+</div>
+
+<script>
+    angular.module('fullNameApp', [])
+        .controller('FullNameController', function($scope) {
+            // Default values for first name and last name
+            $scope.firstName = 'John';
+            $scope.lastName = 'Doe';
+
+            // Function to concatenate first name and last name
+            $scope.getFullName = function() {
+                return $scope.firstName + ' ' + $scope.lastName;
+            };
+        });
+</script>
+
+</body>
+</html>
+
+SHOPPING CART:
+
+<!DOCTYPE html>
+<html lang="en" ng-app="shoppingApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="ShoppingController">
+        <h2>Shopping List</h2>
+        <ul>
+            <li ng-repeat="item in items">
+                {{item.name}}
+                <button ng-click="removeItem($index)">Remove</button>
+            </li>
+        </ul>
+        <label for="newItem">New Item:</label>
+        <input type="text" ng-model="newItem" id="newItem" placeholder="Enter item name">
+        <button ng-click="addItem()">Add</button>
+    </div>
+    <script>
+        angular.module('shoppingApp',[]).controller('ShoppingController',function($scope){
+            $scope.items=[{name:'Apple'}];
+            $scope.addItem=function(){
+                if($scope.newItem){
+                    $scope.items.push({name:$scope.newItem});
+                    $scope.newItem='';
+                }
+            };
+            $scope.removeItem=function(index){
+                $scope.items.splice(index,1);
+            };
+        });
+    </script>
+</body>
+</html>
+
+CALCULATOR
+
+<!DOCTYPE html>
+<html lang="en" ng-app="calculatorApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .buttons button {
+        padding: 10px;
+        margin: 5px;
+        font-size: 20px;
+    }
+    </style>
+</head>
+<body>
+    <div ng-controller="CalculatorController">
+        <h2>Calculator</h2>
+        <input type="text" ng-model="result" readonly>
+        <div class="buttons">
+            <button ng-click="appendToDisplay('7')">7</button>
+            <button ng-click="appendToDisplay('8')">8</button>
+            <button ng-click="appendToDisplay('9')">9</button>
+            <button ng-click="appendToDisplay('/')">/</button>
+            <button ng-click="appendToDisplay('4')">4</button>
+            <button ng-click="appendToDisplay('5')">5</button>
+            <button ng-click="appendToDisplay('6')">6</button>
+            <button ng-click="appendToDisplay('*')">*</button>
+            <button ng-click="appendToDisplay('1')">1</button>
+            <button ng-click="appendToDisplay('2')">2</button>
+            <button ng-click="appendToDisplay('3')">3</button>
+            <button ng-click="appendToDisplay('-')">-</button>
+            <button ng-click="appendToDisplay('0')">0</button>
+            <button ng-click="appendToDisplay('.')">.</button>
+            <button ng-click="calculate()">=</button>
+            <button ng-click="appendToDisplay('+')">+</button>
+            <button ng-click="clearDisplay()">C</button>
+        </div>
+    </div>
+    <script>
+        angular.module('calculatorApp', []).controller('CalculatorController', function($scope) {
+            $scope.result = "";
+            $scope.appendToDisplay = function(val) {
+                $scope.result += val;
+            }
+            $scope.calculate = function() {
+                try {
+                    $scope.result = eval($scope.result).toString();
+                } catch (err) {
+                    $scope.result = err;
+                }
+            }
+            $scope.clearDisplay = function() {
+                $scope.result = "";
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+CRUD:
+
+<!DOCTYPE html>
+<html lang="en" ng-app="crudApp">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Application</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="UserController">
+    <h2>CRUD Application</h2>
+    <form ng-submit="addUser()">
+        <input type="text" ng-model="newUser.name" placeholder="Enter Name" required>
+        <input type="email" ng-model="newUser.email" placeholder="Enter Email" required>
+        <button type="submit">Add User</button>
+    </form>
+    <ul>
+        <li ng-repeat="user in users">
+            {{user.name}} - {{user.email}}
+            <button ng-click="editUser(user)">Edit</button>
+            <button ng-click="deleteUser(user)">Delete</button>
+        </li>
+    </ul>
+    <form ng-submit="updateUser()">
+        <input type="text" ng-model="editedUser.name" required>
+        <input type="email" ng-model="editedUser.email" required>
+        <button type="submit">Update User</button>
+    </form>
+
+    <script>
+        angular.module('crudApp', [])
+            .controller('UserController', function ($scope) {
+                $scope.users = [];
+                $scope.newUser = {};
+                $scope.editedUser = {};
+
+                $scope.addUser = function () {
+                    $scope.users.push(angular.copy($scope.newUser));
+                    $scope.newUser = {};
+                };
+
+                $scope.deleteUser = function (user) {
+                    const index = $scope.users.indexOf(user);
+                    $scope.users.splice(index, 1);
+                };
+
+                $scope.editUser = function (user) {
+                    $scope.editedUser = angular.copy(user);
+                };
+
+                $scope.updateUser = function () {
+                    const index = $scope.users.indexOf($scope.editedUser);
+                    $scope.users[index] = angular.copy($scope.editedUser);
+                    $scope.editedUser = {};
+                };
+            });
+    </script>
+</body>
+</html>
+
+
+REACT JS:
+
+CALCULATOR:
+
+import React,{useState} from 'react';
+function Calculator(){
+    const [result,setResult]=useState('');
+    const handleClick=(value)=>{
+        if(value==='='){
+            try{
+                setResult(eval(result).toString());
+            }catch(err){
+                setResult(err);
+            }
+        }else if(value==='C'){
+            setResult('');
+        }else{
+            setResult(result+value);
+        }
+    }
+    return(
+        <div>
+            <input type='text' value={result} disabled></input>
+            <div className='buttons'>
+            <div>
+                <button onClick={() => handleClick('7')}>7</button>
+                <button onClick={() => handleClick('8')}>8</button>
+                <button onClick={() => handleClick('9')}>9</button>
+                <button onClick={() => handleClick('/')}>/</button>
+            </div>
+            <div>
+                <button onClick={() => handleClick('4')}>4</button>
+                <button onClick={() => handleClick('5')}>5</button>
+                <button onClick={() => handleClick('6')}>6</button>
+                <button onClick={() => handleClick('*')}>*</button>
+            </div>
+            <div>
+            <button onClick={() => handleClick('1')}>1</button>
+            <button onClick={() => handleClick('2')}>2</button>
+            <button onClick={() => handleClick('3')}>3</button>
+            <button onClick={() => handleClick('-')}>-</button>
+            </div>
+            <div>
+                <button onClick={() => handleClick('0')}>0</button>
+                <button onClick={() => handleClick('.')}>.</button>
+                <button onClick={() => handleClick('+')}>+</button>
+                <button onClick={() => handleClick('=')}>=</button>
+                <button onClick={() => handleClick('C')}>C</button>
+            </div>
+        </div>
+        </div>
+    );
+}
+export default Calculator;
+
+VOTING APP:
+
+import React, { useState } from 'react';
+const initialOptions=[{ id: 1, name: 'Option A', votes: 0 },
+{ id: 2, name: 'Option B', votes: 0 },
+{ id: 3, name: 'Option C', votes: 0 },];
+function VotingApp() {
+  // Define the initial state for voting options and their vote counts
+  const [options, setOptions] = useState([
+    { id: 1, name: 'Option A', votes: 0 },
+    { id: 2, name: 'Option B', votes: 0 },
+    { id: 3, name: 'Option C', votes: 0 },
+  ]);
+
+  // Function to handle voting for an option
+  const handleVote = (id) => {
+    const updatedOptions = options.map((option) =>
+      option.id === id ? { ...option, votes: option.votes + 1 } : option
+    );
+    setOptions(updatedOptions);
+  };
+
+  function handleClear(){
+    setOptions(initialOptions);
+  }
+
+  return (
+    <div>
+      <h1>Voting Application</h1>
+      <ul>
+        {options.map((option) => (
+          <li key={option.id}>
+            <span>{option.name}</span>
+            <button onClick={() => handleVote(option.id)}>Vote</button>
+            <span>Votes: {option.votes}</span>
+          </li>
+        ))}
+      </ul>
+      <button onClick={()=>handleClear()}>clear</button>
+    </div>
+  );
+}
+
+export default VotingApp;
+
+EXPRESS JS:
+
+GET METHOD:
+
+const express = require('express');
+const app = express();
+const port = 3000;
+
+// Set up middleware to parse URL-encoded form data
+app.use(express.urlencoded({ extended: false }));
+
+// Set up a route to handle GET requests to the root URL
+app.get('/', (req, res) => {
+    res.send(`
+        <html>
+        <head><title>Form Example</title></head>
+        <body>
+            <h1>Enter your information</h1>
+            <form action="/submit" method="GET">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <button type="submit" >Submit</button>
+            </form>
+        </body>
+        </html>
+    `);
+});
+
+// Set up a route to handle form submissions
+app.get('/submit', (req, res) => {
+    const name = req.query.name;
+    const email = req.query.email;
+    res.send(`
+        <html>
+        <head><title>Form Submission</title></head>
+        <body>
+            <h1>Form Submission</h1>
+            <p>Name: ${name}</p>
+            <p>Email: ${email}</p>
+            <a href="/">Go back</a>
+        </body>
+        </html>
+    `);
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+
+
+POST METHOD:
+
+const express=require('express')
+const app=express();
+const port=5000;
+app.use(express.urlencoded({extended:false}));
+app.get('/',(req,res)=>{
+    res.send(`
+    <html>
+        <head><title>Form</title></head>
+        <body>
+            <h1>Information</h1>
+            <form action="/submit" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required><br><br>
+                <button type="submit">submit</button>
+            </form>
+        </body>
+    </html>
+    `);
+});
+
+app.post('/submit',(req,res)=>{
+    const name=req.body.name;
+    const email=req.body.email;
+    res.send(`
+    <html>
+    <head><title>Form Submission</title></head>
+    <body>
+        <p>name=${name}</p>
+        <p>email=${email}</p>
+        <a href="/">Go back</a>
+    </body>
+    </html>
+    `);
+});
+app.listen(port,()=>{
+    console.log(`server is running on ${port}`);
+});
+
+COOKIE:
+
+const express=require('express');
+const cookieParser=require('cookie-parser');
+const app=express();
+const port=7000;
+app.use(cookieParser());
+app.get('/cookieset',(req,res)=>{
+    res.cookie('cookie_name', 'cookie_value');
+    res.cookie('company', 'javatpoint');
+    res.cookie('name', 'sonoo');
+    res.status(200).send('Cookie is set');
+});
+app.get('/cookieget', function(req, res) {
+    res.status(200).send(req.cookies);
+});
+app.get('/', function(req, res) {
+    res.status(200).send('Welcome to JavaTpoint!');
+});
+app.listen(port,()=>{
+    console.log("Port listening");
+});
+
+FILE UPLOAD:
+
+app.cjs:
+
+const express = require('express');
+const fileUpload = require('express-fileupload');
+const path = require('path');
+const app = express();
+const port = 2000;
+
+// Enable file upload middleware
+app.use(fileUpload());
+
+// Serve static files from the "public" directory
+app.use(express.static('public'));
+
+// Endpoint to render the file upload form
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Endpoint to handle file upload
+app.post('/upload', (req, res) => {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+
+    // Access the uploaded file
+    const uploadedFile = req.files.uploadedFile;
+
+    // Move the file to the specified folder
+    const uploadPath = path.join(__dirname, 'jtp_file_upload', uploadedFile.name);
+    uploadedFile.mv(uploadPath, (err) => {
+        if (err) {
+            return res.status(500).send(err);
+        }
+        res.send('File uploaded successfully.');
+    });
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
+
+index.html in public folder:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+<body>
+    <h1>File upload</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="uploadedFile" required>
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
+
+PAYEMENT:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Payment Form</h2>
+        <form id="paymentForm">
+            <div class="form-group">
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="Enter card number" required>
+            </div>
+            <div class="form-group">
+                <label for="cardHolder">Card Holder Name:</label>
+                <input type="text" id="cardHolder" name="cardHolder" placeholder="Enter card holder name" required>
+            </div>
+            <div class="form-group">
+                <label for="expiryDate">Expiry Date:</label>
+                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YYYY" required>
+            </div>
+            <div class="form-group">
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" placeholder="Enter CVV" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">cash:</label>
+                <input type="text" id="amount" name="aamount" placeholder="Enter amount" required>
+            </div>
+            <button type="submit">Pay Now</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener("submit",function(event){
+            event.preventDefault();
+            var cardNumber=document.getElementById("cardNumber").value;
+            var cardHolder=document.getElementById("cardHolder").value;
+            var expiryDate=document.getElementById("expiryDate").value;
+            var cvv=document.getElementById("cvv").value;
+            var amount=document.getElementById("amount").value;
+            if(cardHolder && cardNumber && expiryDate && cvv && amount){
+                alert("Payment successful");
+            }else{
+                alert("please fill all fields");
+            }
+        });
+    </script>
+</body>
+</html>
+
+MAP:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Map</title>
+    <style>
+        #map {
+            width: 100%;
+            max-width: 600px;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <img id="map" src="/india-map.jpg" usemap="#india-map">
+    <map name="india-map">
+        <area shape="rect" coords="277,574,238,606" href="AndhraPradesh.html" alt="Area 1">
+        <area shape="rect" coords="195,576,156,608" href="karnataka.html" alt="Area 2">
+    </map>
+</body>
+</html>
+
+AP.HTML
+
+<HTML>
+    <HEAD>
+    <TITLE>About Andhra Pradesh</TITLE> </HEAD>
+    <BODY>
+    <CENTER><H1>Andhra Pradesh</H1></CENTER>
+    <HR>
+    <UL>
+    <LI>Area : 2,75,068 Sq. Kms</LI>
+    <LI>Capital : Vishakapatnam</LI>
+    <LI>Language : Telugu</LI>
+    <LI>Population : 7,57,27,541</LI>
+    </UL>
+    <hr>
+    <a href='ImageMap.html'>India Map</a>
+    </BODY>
+    </HTML>
+
+KARNATAKA.HTML
+
+<HTML>
+    <HEAD>
+    <TITLE>About Karnataka</TITLE> </HEAD>
+    <BODY>
+    <CENTER><H1>Karnataka</H1></CENTER>
+    <HR>
+    <UL>
+    <LI>Area : 1,91,791 Sq. Kms</LI>
+    <LI>Capital : Bangalore</LI>
+    <LI>Language : Kannada</LI>
+    <LI>Population : 5,27,33,958</LI>
+    </UL>
+    <hr>
+    <a href='ImageMap.html'>India Map</a>
+    </BODY>
+    </HTML>
+
+PHOTO GALLERY:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <div class="filter">
+            <button onclick="filter('all')">All</button>
+            <button onclick="filter('nature')">Nature</button>
+            <button onclick="filter('city')">City</button>
+        </div>
+        <div class="sort">
+            <select id="sort-select" onchange="sortGallery()">
+                <option value="default">Default</option>
+                <option value="name">Name</option>
+                <option value="date">Date</option>
+            </select>
+        </div>
+        <div class="images">
+            <img src="/nature1.jpg" alt="Nature" class="nature">
+            <img src="/nature2.webp" alt="Nature" class="nature">
+            <img src="/city1.jpg" alt="City" class="city">
+            <img src="/city2.jpg" alt="City" class="city">
+        </div>
+    </div>
+    <script>
+        function filter(category){
+            const images=document.querySelectorAll('.images img');
+            images.forEach(img=>{
+                if(category==='all' || img.classList.contains(category)){
+                    img.style.display='block';
+                }else{
+                    img.style.display='none';
+                }
+            });
+        }
+        function sortGallery(){
+            const sortCriteria=document.getElementById('sort-select').value;
+            const imagesContainer=document.querySelector('.images');
+            Array.from(imagesContainer.children).sort((a,b)=>
+            sortCriteria==='name'?a.alt.localeCompare(b.alt):sortCriteria==='date'?a.src.localeCompare(b.src):0).forEach(img=>imagesContainer.appendChild(img));
+        }
+        window.onload=()=>{filter('all');sortGallery();}
+    </script>
+</body>
+</html>
